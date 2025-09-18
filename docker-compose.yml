@@ -1,0 +1,19 @@
+services:
+  angie:
+    image: docker.angie.software/angie:1.9.0
+    container_name: angie
+    hostname: angie
+    restart: always
+    volumes:
+      - angie-ssl-data:/var/lib/angie/acme/
+      - ./angie.conf:/etc/angie/http.d/default.conf:ro
+      - /dev/shm:/dev/shm:rw
+      - ./html:/var/www/html:ro
+    command: sh -c 'rm -f /dev/shm/angie.sock && angie -g "daemon off;"'
+    network_mode: host
+
+volumes:
+  angie-ssl-data:
+    driver: local
+    external: false
+    name: angie-ssl-data
